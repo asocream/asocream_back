@@ -1,6 +1,7 @@
 package com.yim.asocream.model.user;
 
 import com.yim.asocream.model.common.DateTime;
+import com.yim.asocream.model.common.RoleType;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -29,6 +30,9 @@ public class UserEntity extends DateTime {
 
     @Enumerated(EnumType.STRING)
     private Gender gender;
+
+//    @Enumerated(EnumType.STRING)
+//    private RoleType roleType;
 
     private String roles = "Unauthenticated";//enum으로 만들기
 

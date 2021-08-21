@@ -46,7 +46,6 @@ public class UserService {
         return true;
     }
 
-
     public long insUser(UserEntity userEntity) {
 
         confirmUser(userEntity.getUserEmail());
@@ -78,14 +77,16 @@ public class UserService {
         return confirmUser(userEmail);
     }
 
+
     public long upUser(UpUser upUser, Principal principal) {
-        UserEntity userEntity = findUserEmailAndUserEntity(principal.getName());//!!!!!함수로 사용시 상태를 유지하는지 모르겠다
+        UserEntity userEntity = 
+                findUserEmailAndUserEntity(principal.getName());//!!!!!트렌젝션 생명주기 확인
         upUser.PasswordEncode(passwordEncoder);
         if (upUser.getUserPw() != userEntity.getUserPw()) {
             throw new WrongPasswordException("비밀번호가 틀렸습니다.");
         }
         userEntity.setUserPw(upUser.getNewPw());
-        userRepository.save(userEntity);
+        //userRepository.save(userEntity); 영속성 때매 아마 안적어줘도 될듯
         return userEntity.getId();
     }
 
@@ -100,9 +101,9 @@ public class UserService {
         return userEntity.getId();
     }
 
-    public void emailSend(String userEmail) {
+    public void emailSend(String userEmail) { //토큰 만들어서 이메일 인증번호 던짐
 
-        String token = jwtTokenService.createToken(userEmail);
+        String token = jwtTokenService.createToken(userEmail);//이메일로 만드러진 토큰
 
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(userEmail);//보낼 이메일
@@ -112,18 +113,33 @@ public class UserService {
 
     }
 
-    public void authenticationEmail(String token) throws InterruptedException {
-
+    public String findPassword(String token) throws InterruptedException{
         String userEmail = jwtTokenService.authenticationToken(token);
+
         Optional<UserEntity> userEntity_ =
                 userRepository.findOptionalByUserEmail(userEmail);
         if(!userEntity_.isPresent()){
-            throw new UsernameNotFoundException("없는 이메일 입니다.");
+            throw new UsernameNotFoundException("업는 아이디 입니다.");
         }
         UserEntity userEntity = userEntity_.get();
-        userEntity.setRoles("user");
+        String newPassword = getRamdomPassword();
+        userEntity.setUserPw(newPassword);
+        userEntity.userPasswordEncoder(passwordEncoder);
         userRepository.save(userEntity);
+        return newPassword;
+    }
 
+    public String getRamdomPassword() {
+        int len = 12;
+        char[] charSet = new char[] {
+                '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
+        };
+        int idx = 0; StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < len; i++) {
+            idx = (int) (charSet.length * Math.random()); // 36 * 생성된 난수를 Int로 추출 (소숫점제거)
+            sb.append(charSet[idx]);
+        }
+        return sb.toString();
     }
 }
 
