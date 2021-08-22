@@ -2,10 +2,7 @@ package com.yim.asocream.model.user;
 
 import com.yim.asocream.model.common.DateTime;
 import com.yim.asocream.model.common.RoleType;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
@@ -16,7 +13,9 @@ import java.util.List;
 @Entity//jpa entity 등록
 @Getter//getter 생성
 @NoArgsConstructor(access = AccessLevel.PROTECTED)//기본생성자 생성 (접근지정자= PROTECTED)
-public class UserEntity extends DateTime {
+@ToString
+public class
+UserEntity extends DateTime {
 
     @Id //id 프라머리키 설정,
     @GeneratedValue(strategy = GenerationType.SEQUENCE)// GeneratedValue 자동 값증가

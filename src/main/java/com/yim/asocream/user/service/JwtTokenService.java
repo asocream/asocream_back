@@ -3,16 +3,18 @@ package com.yim.asocream.user.service;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+@Service
 public class JwtTokenService {
-    Long expiredTime = 1000 * 60L * 60L * 2L; // 토큰 유효 시간 (2시간)
-    String key = "emailKey";//키값 나중에 변경
+    static Long expiredTime = 1000 * 60L * 60L * 2L; // 토큰 유효 시간 (2시간)
+    static String key = "emailKey";//키값 나중에 변경
 
-    public String createToken(String userId){
+    static public String createToken(String userId){
 
         Date ext = new Date(); // 토큰 만료 시간
         ext.setTime(ext.getTime() + expiredTime);
@@ -33,6 +35,7 @@ public class JwtTokenService {
 
         return jwt;
     }
+
     public String authenticationToken(String token) throws InterruptedException{
         Claims claims = Jwts.parser()
                 .setSigningKey(key.getBytes())
@@ -41,4 +44,5 @@ public class JwtTokenService {
         String userId = claims.get("userId",String.class);
         return userId;
     }
+
 }

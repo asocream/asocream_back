@@ -2,6 +2,7 @@ package com.yim.asocream.security.config;
 
 import com.yim.asocream.security.filter.jwt.JwtAuthenticationFilter;
 import com.yim.asocream.security.filter.jwt.JwtAuthorizationFilter;
+import com.yim.asocream.user.repository.UserRepository;
 import com.yim.asocream.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -26,7 +27,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     private final CorsFilter corsFilter;
-    private final UserService service;
+    private final UserRepository userRepository;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -38,7 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin().disable()//폼로그인 안씀
                 .httpBasic().disable()//기본 로그인 방법안씀 JWT사용하는 로그인 방법 사용할거임
                 .addFilter(new JwtAuthenticationFilter(authenticationManager()))
-                .addFilter(new JwtAuthorizationFilter(authenticationManager(),service))
+                .addFilter(new JwtAuthorizationFilter(authenticationManager(),userRepository))
                 .authorizeRequests()
                 .anyRequest().permitAll();
     }

@@ -4,6 +4,7 @@ package com.yim.asocream.user.controller;
 import com.yim.asocream.user.model.InsUser;
 import com.yim.asocream.user.model.ResponseUser;
 import com.yim.asocream.user.model.UpUser;
+import com.yim.asocream.user.service.EmailService;
 import com.yim.asocream.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,7 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final EmailService emailService;
 
     /**
      * create
@@ -33,11 +35,7 @@ public class UserController {
         ResponseUser responseUser = userService.selUserOne(principal);
         return responseUser;
     }
-    @GetMapping("/userList") // !!!!!!!!전체 유저 검색 나중에 page 처리해야함
-    public List<ResponseUser> selUserList(){
 
-        return userService.selUserList();
-    }
     @GetMapping("/userConfirm")
     public boolean userConfirm(String userEmail){
 
@@ -65,7 +63,12 @@ public class UserController {
     //이메일 보내기
     @PostMapping("/sendMail")
     public void sendEmail(@RequestBody String userEmail){
-        userService.emailSend(userEmail);
+        emailService.emailSend(userEmail);
+    }
+    //토큰 확인및 비밀번호 변경 봔환값 비밀번호임
+    @PostMapping("/findPassword")
+    public String findPassword(@RequestBody String token) throws InterruptedException {
+        return emailService.findPassword(token);
     }
 
 

@@ -5,11 +5,12 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.yim.asocream.model.user.UserEntity;
 import com.yim.asocream.security.auth.PrincipalDetails;
-import com.yim.asocream.user.service.UserService;
+import com.yim.asocream.user.repository.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import javax.servlet.FilterChain;
@@ -17,17 +18,18 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Optional;
 
 
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter{
 
 
-    private UserService service;
+    private UserRepository userRepository;
 
 
-    public JwtAuthorizationFilter(AuthenticationManager authenticationManager, UserService service) {
+    public JwtAuthorizationFilter(AuthenticationManager authenticationManager, UserRepository userRepository) {
         super(authenticationManager);
-        this.service = service;
+        this.userRepository = userRepository;
 
     }
 
@@ -51,9 +53,14 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter{
 
         if(userEmail != null) {
 
-            UserEntity user = service.findUserEmailAndUserEntity(userEmail);
+            Optional<UserEntity> user_ = userRepository.findOptionalByUserEmail(userEmail);
 
-            PrincipalDetails principalDetails = new PrincipalDetails(user);
+            if(!user_.isPresent()){
+                throw new UsernameNotFoundException("없는 이메일 입니다.");
+
+            }
+
+            PrincipalDetails principalDetails = new PrincipalDetails(user_.get());
 
             Authentication authentication =
                     new UsernamePasswordAuthenticationToken(principalDetails, null, principalDetails.getAuthorities());

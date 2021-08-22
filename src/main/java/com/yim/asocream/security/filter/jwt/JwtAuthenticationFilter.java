@@ -61,7 +61,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         if(principalDetailis.getUser().getRoles().equals("Unauthenticated")){
             response.getWriter().append("Unauthenticated:").append(principalDetailis.getUser().getUserEmail());
         }
-        else {
+        else {//jwt 바꾸기
 
             String jwtToken = JWT.create()
                     .withSubject("jwtToken")

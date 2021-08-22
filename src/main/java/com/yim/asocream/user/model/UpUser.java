@@ -14,7 +14,6 @@ public class UpUser {
     private String newPw;
 
     public void PasswordEncode(PasswordEncoder passwordEncoder){
-        this.userPw = passwordEncoder.encode(this.getUserPw());
         this.newPw = passwordEncoder.encode(this.getNewPw());
     }
 }

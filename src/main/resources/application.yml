@@ -12,16 +12,9 @@ spring:
     static-path-pattern: /static/**
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: "jdbc:mysql://125.185.128.147:3306/CodingWiki?characterEncoding=UTF-8&serverTimezone=Asia/Seoul"
+    url: "jdbc:mysql://125.185.128.147:3306/asocream?characterEncoding=UTF-8&serverTimezone=Asia/Seoul"
     username: root
     password: 123123
-  jpa:
-    hibernate:
-      ddl-auto: create
-    properties:
-      hibernate:
-        #show_sql: true
-        format_sql: true
   mail:
     host: smtp.gmail.com
     port: 587
@@ -38,6 +31,13 @@ spring:
           timeout: 5000
           writetimeout: 5000
 
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        #show_sql: true
+        format_sql: true
 
 
 
