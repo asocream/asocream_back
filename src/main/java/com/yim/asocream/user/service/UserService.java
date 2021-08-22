@@ -3,20 +3,16 @@ package com.yim.asocream.user.service;
 
 import com.yim.asocream.exception.UserOverlapException;
 import com.yim.asocream.exception.WrongPasswordException;
-import com.yim.asocream.model.user.UserEntity;
+import com.yim.asocream.user.model.entity.UserEntity;
 import com.yim.asocream.user.model.ResponseUser;
 import com.yim.asocream.user.model.UpUser;
 import com.yim.asocream.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Service

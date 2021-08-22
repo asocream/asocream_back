@@ -6,10 +6,10 @@ import com.yim.asocream.user.model.ResponseUser;
 import com.yim.asocream.user.model.UpUser;
 import com.yim.asocream.user.service.EmailService;
 import com.yim.asocream.user.service.UserService;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -61,18 +61,29 @@ public class UserController {
     }
 
     //이메일 보내기
-    @PostMapping("/sendMail")
-    public void sendEmail(@RequestBody String userEmail){
+    @GetMapping("/sendMail")
+    public void sendEmail(String userEmail){
         emailService.emailSend(userEmail);
     }
-    //토큰 확인및 비밀번호 변경 봔환값 비밀번호임
-    @PostMapping("/findPassword")
-    public String findPassword(@RequestBody String token) throws InterruptedException {
-        return emailService.findPassword(token);
+
+    // 회원가입 인증한 유저 권한 변경하기
+    @PostMapping("/emailConfirm")
+    public long emailConfirm(@RequestBody Token token) throws InterruptedException {
+        return emailService.authenticationEmail(token.token);
     }
 
 
+    //토큰 확인및 비밀번호 변경 봔환값 비밀번호임
+    @PostMapping("/findPassword")
+    public String findPassword(@RequestBody Token token) throws InterruptedException {
+        return emailService.findPassword(token.token);
+    }
 
+
+    @Getter
+    static class Token{
+        String token;
+    }
 
 
 

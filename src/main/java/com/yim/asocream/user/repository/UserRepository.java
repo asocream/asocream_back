@@ -1,6 +1,6 @@
 package com.yim.asocream.user.repository;
 
-import com.yim.asocream.model.user.UserEntity;
+import com.yim.asocream.user.model.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

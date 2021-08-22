@@ -1,10 +1,7 @@
 package com.yim.asocream.user.service;
 
-import com.yim.asocream.model.user.UserEntity;
+import com.yim.asocream.user.model.entity.UserEntity;
 import com.yim.asocream.user.repository.UserRepository;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -12,14 +9,12 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class EmailService {
 
 
@@ -28,7 +23,7 @@ public class EmailService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    @Async//!!!!뭔지 까먹음 찾아보자
+    @Async//!!!!비동기 처리인거 같은데 좀더 공부해서 내껄로 만들기
     public void sendEmail(SimpleMailMessage email) {
         javaMailSender.send(email);
     }
@@ -43,19 +38,35 @@ public class EmailService {
         sendEmail(mailMessage);
     }
 
-    public String findPassword(String token) throws InterruptedException{
-        String userEmail = jwtTokenService.authenticationToken(token);
+    public long authenticationEmail(String token) throws InterruptedException {
 
+        String userId = jwtTokenService.authenticationToken(token);
+        Optional<UserEntity> userEntity_ =
+                userRepository.findOptionalByUserEmail(userId);
+        if(!userEntity_.isPresent()){
+            throw new UsernameNotFoundException("없는 아이디 입니다.");
+        }
+        UserEntity userEntity = userEntity_.get();
+        userEntity.setRoles("user");
+        //userRepository.save(userEntity); 영속성 때매 안해줘도 되는데 실수로 @Transactional 안넣어서 엄청 찾음 ㅠㅠ
+        return userEntity.getId();
+    }
+
+
+
+    public String findPassword(String token) throws InterruptedException{
+
+        String userEmail = jwtTokenService.authenticationToken(token);
         Optional<UserEntity> userEntity_ =
                 userRepository.findOptionalByUserEmail(userEmail);
         if(!userEntity_.isPresent()){
-            throw new UsernameNotFoundException("업는 아이디 입니다.");
+            throw new UsernameNotFoundException("없는 아이디 입니다.");
         }
         UserEntity userEntity = userEntity_.get();
         String newPassword = getRamdomPassword();
         userEntity.setUserPw(newPassword);
         userEntity.userPasswordEncoder(passwordEncoder);
-        userRepository.save(userEntity);
+        //userRepository.save(userEntity);영속성 나란 병신은 왜 지워도 될걸 주석달까?? 누군가는 이 주석 봐주면서 피식 해줬음~~~~
         return newPassword;
     }
 

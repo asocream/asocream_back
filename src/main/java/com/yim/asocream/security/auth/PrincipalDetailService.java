@@ -2,7 +2,7 @@ package com.yim.asocream.security.auth;
 
 
 
-import com.yim.asocream.model.user.UserEntity;
+import com.yim.asocream.user.model.entity.UserEntity;
 import com.yim.asocream.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;

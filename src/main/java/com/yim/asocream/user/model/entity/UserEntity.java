@@ -1,7 +1,6 @@
-package com.yim.asocream.model.user;
+package com.yim.asocream.user.model.entity;
 
 import com.yim.asocream.model.common.DateTime;
-import com.yim.asocream.model.common.RoleType;
 import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 

@@ -1,14 +1,9 @@
 package com.yim.asocream.user.service;
 
-import com.yim.asocream.model.user.Gender;
-import com.yim.asocream.model.user.UserEntity;
-import com.yim.asocream.user.repository.UserRepository;
+import com.yim.asocream.user.model.entity.Gender;
+import com.yim.asocream.user.model.entity.UserEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import javax.transaction.Transactional;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 
 class UserServiceTest {

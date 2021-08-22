@@ -1,6 +1,6 @@
 package com.yim.asocream.user.model;
 
-import com.yim.asocream.model.user.UserEntity;
+import com.yim.asocream.user.model.entity.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

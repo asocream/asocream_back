@@ -3,7 +3,7 @@ package com.yim.asocream.security.filter.jwt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.yim.asocream.model.user.UserEntity;
+import com.yim.asocream.user.model.entity.UserEntity;
 import com.yim.asocream.security.auth.PrincipalDetails;
 import com.yim.asocream.user.repository.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;

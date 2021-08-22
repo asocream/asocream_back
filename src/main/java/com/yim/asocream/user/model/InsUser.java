@@ -1,7 +1,7 @@
 package com.yim.asocream.user.model;
 
-import com.yim.asocream.model.user.Gender;
-import com.yim.asocream.model.user.UserEntity;
+import com.yim.asocream.user.model.entity.Gender;
+import com.yim.asocream.user.model.entity.UserEntity;
 import lombok.Getter;
 
 import javax.validation.constraints.Email;
