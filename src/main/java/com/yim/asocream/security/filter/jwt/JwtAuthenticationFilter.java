@@ -3,6 +3,7 @@ package com.yim.asocream.security.filter.jwt;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.yim.asocream.user.model.RoleType;
 import com.yim.asocream.user.model.entity.UserEntity;
 import com.yim.asocream.security.auth.PrincipalDetails;
 import lombok.RequiredArgsConstructor;
@@ -58,7 +59,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         PrincipalDetails principalDetailis = (PrincipalDetails) authResult.getPrincipal();
 
-        if(principalDetailis.getUser().getRoles().equals("Unauthenticated")){
+        if(principalDetailis.getUser().getRoleType()== RoleType.UNAUTHENTICATED){
             response.getWriter().append("Unauthenticated:").append(principalDetailis.getUser().getUserEmail());
         }
         else {//jwt 바꾸기

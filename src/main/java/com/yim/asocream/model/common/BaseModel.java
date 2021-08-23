@@ -1,7 +1,9 @@
 package com.yim.asocream.model.common;
 
 import lombok.Getter;
+import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -13,12 +15,13 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 @MappedSuperclass
 @Getter
-public class DateTime {
+public class BaseModel extends BaseTimeModel{
 
-    @CreatedDate
+    @CreatedBy
     @Column(updatable = false)
-    private LocalDateTime createdDate;
+    private String CreatedBy;
 
-    @LastModifiedDate
-    private LocalDateTime lastModifiedDate;
+    @LastModifiedBy
+    private String LastModifiedBy;
+
 }

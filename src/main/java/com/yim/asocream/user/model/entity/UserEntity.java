@@ -1,24 +1,21 @@
 package com.yim.asocream.user.model.entity;
 
-import com.yim.asocream.model.common.DateTime;
+import com.yim.asocream.model.common.BaseTimeModel;
+import com.yim.asocream.user.model.RoleType;
 import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 @Entity//jpa entity 등록
 @Getter//getter 생성
 @NoArgsConstructor(access = AccessLevel.PROTECTED)//기본생성자 생성 (접근지정자= PROTECTED)
-@ToString
 public class
-UserEntity extends DateTime {
+UserEntity extends BaseTimeModel {
 
     @Id //id 프라머리키 설정,
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)// GeneratedValue 자동 값증가
-    @Column(name = "user_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)// GeneratedValue 자동 값증가 아이덴티티 전략
+    @Column(name = "user_id")//이름 설정
     private long id;
 
     private String userEmail;//유저 아이디
@@ -29,10 +26,12 @@ UserEntity extends DateTime {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-//    @Enumerated(EnumType.STRING)
-//    private RoleType roleType;
+    @Enumerated(EnumType.STRING)
+    private RoleType roleType = RoleType.UNAUTHENTICATED;
 
-    private String roles = "Unauthenticated";//enum으로 만들기
+    public void setRoleType(RoleType roleType) {
+        this.roleType = roleType;
+    }
 
     public void setProfileUrl(String profileUrl) {
         this.profileUrl = profileUrl;
@@ -40,17 +39,6 @@ UserEntity extends DateTime {
 
     public void setUserPw(String userPw) {
         this.userPw = userPw;
-    }
-
-    public List<String> getRoleList() {
-        if(this.roles.length() > 0) {
-            return Arrays.asList(this.roles.split(","));
-        }
-        return new ArrayList<>();
-    }
-
-    public void setRoles(String roles) {
-        this.roles = roles;
     }
 
     @Builder
@@ -63,10 +51,6 @@ UserEntity extends DateTime {
 
     public void userPasswordEncoder(PasswordEncoder passwordEncoder){
         this.userPw = passwordEncoder.encode(this.getUserPw());
-    }
-
-    public void userPasswordEncoder(PasswordEncoder passwordEncoder,String newPassword){
-        this.userPw = passwordEncoder.encode(newPassword);
     }
 
 }

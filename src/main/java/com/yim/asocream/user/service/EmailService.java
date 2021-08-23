@@ -1,5 +1,6 @@
 package com.yim.asocream.user.service;
 
+import com.yim.asocream.user.model.RoleType;
 import com.yim.asocream.user.model.entity.UserEntity;
 import com.yim.asocream.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -47,7 +48,7 @@ public class EmailService {
             throw new UsernameNotFoundException("없는 아이디 입니다.");
         }
         UserEntity userEntity = userEntity_.get();
-        userEntity.setRoles("user");
+        userEntity.setRoleType(RoleType.USER);
         //userRepository.save(userEntity); 영속성 때매 안해줘도 되는데 실수로 @Transactional 안넣어서 엄청 찾음 ㅠㅠ
         return userEntity.getId();
     }

@@ -19,7 +19,7 @@ public class ResponseUser {
     public ResponseUser(UserEntity userEntity){
         this.userEmail = userEntity.getUserEmail();
         this.name = userEntity.getName();
-        this.roles = userEntity.getRoles();
+        this.roles = userEntity.getRoleType().toString();
     }
 
 }

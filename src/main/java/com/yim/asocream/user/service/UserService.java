@@ -47,7 +47,7 @@ public class UserService {
         confirmUser(userEntity.getUserEmail());
         userEntity.userPasswordEncoder(passwordEncoder);
         userRepository.save(userEntity);//저장해주는 동시에 id 값 받아와 userEntity 저장해둠
-        return 0;
+        return userEntity.getId();
     }
 
 
