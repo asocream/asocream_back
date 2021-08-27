@@ -18,6 +18,7 @@ public class UserController {
     private final UserService userService;
     private final EmailService emailService;
 
+
     /**
      * create
      */
@@ -25,7 +26,6 @@ public class UserController {
     public long insUser(@RequestBody InsUser insUser){
         return userService.insUser(insUser.changeEntity());
     }
-
     /**
      * read
      */
@@ -72,19 +72,15 @@ public class UserController {
         return emailService.authenticationEmail(token.token);
     }
 
-
     //토큰 확인및 비밀번호 변경 봔환값 비밀번호임
     @PostMapping("/findPassword")
     public String findPassword(@RequestBody Token token) throws InterruptedException {
         return emailService.findPassword(token.token);
     }
 
-
     @Getter
     static class Token{
         String token;
     }
-
-
 
 }

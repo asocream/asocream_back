@@ -2,6 +2,8 @@ package com.yim.asocream.orderitem.model.entity;
 
 import com.yim.asocream.item.model.entity.ItemEntity;
 import com.yim.asocream.model.common.BaseModel;
+import com.yim.asocream.order.model.entity.OrderEntity;
+import com.yim.asocream.orderitem.model.request.UpdOrderItemRequest;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,16 +19,29 @@ public class OrderItemEntity extends BaseModel {
     @Column(name = "order_item_id")//이름 설정
     private long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)//지연 로딩
-    @JoinColumn(name = "itemEntity_id")
+    @OneToOne(fetch = FetchType.LAZY)//지연 로딩
+    @JoinColumn(name = "item_id")
     private ItemEntity itemEntity;
     private int count;
     private long sumPrice;
+
+    @ManyToOne(fetch = FetchType.LAZY)//지연 로딩
+    @JoinColumn(name = "order_id")
+    private OrderEntity orderEntity;
 
     public OrderItemEntity(ItemEntity itemEntity, int count) {
         this.itemEntity = itemEntity;
         this.count = count;
         this.sumPrice = count*itemEntity.getPrice();
     }
+
+    public void changeMe(UpdOrderItemRequest updOrderItemRequest,ItemEntity itemEntity){
+        this.itemEntity = itemEntity;
+        this.count = updOrderItemRequest.getCount();
+        this.sumPrice = this.count*itemEntity.getPrice();
+    }
+
+
+
 
 }

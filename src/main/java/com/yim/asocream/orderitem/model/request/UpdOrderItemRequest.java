@@ -5,15 +5,12 @@ import lombok.Getter;
 
 @Getter
 public class
-InsOrderItemRequest {
+UpdOrderItemRequest {
 
+    private long orderItemId;
     private long itemId;
     private int count;
 
-    public OrderItemEntity changeEntity(ItemEntity itemEntity){
 
-        OrderItemEntity orderItemEntity = new OrderItemEntity(itemEntity,this.count);
-        return orderItemEntity;
-    }
 
 }
