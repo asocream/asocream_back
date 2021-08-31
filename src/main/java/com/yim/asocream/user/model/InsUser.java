@@ -3,11 +3,13 @@ package com.yim.asocream.user.model;
 import com.yim.asocream.user.model.entity.Gender;
 import com.yim.asocream.user.model.entity.UserEntity;
 import lombok.Getter;
+import lombok.ToString;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 @Getter
+@ToString
 public class InsUser {
 
     @Email(message = "이메일 양식을 지켜주세요.")
@@ -22,10 +24,10 @@ public class InsUser {
 
     public UserEntity changeEntity(){
         Gender gender_;
-        if(this.gender.equals("mail")){
+        if(this.gender.equals("male")){
             gender_= Gender.male;
         }
-        else if(this.gender.equals("femail")){
+        else if(this.gender.equals("female")){
             gender_ = Gender.female;
         }
         else {

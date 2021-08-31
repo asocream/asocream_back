@@ -26,6 +26,9 @@ dependencies {
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation'//유효성
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail'//이메일
 	implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
+	// https://mvnrepository.com/artifact/commons-net/commons-net
+	implementation group: 'commons-net', name: 'commons-net', version: '3.8.0'//ftp
+
 
 	implementation("com.auth0:java-jwt:3.10.2")//jwt
 	compileOnly 'org.projectlombok:lombok'

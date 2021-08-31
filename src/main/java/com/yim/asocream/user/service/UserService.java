@@ -1,6 +1,7 @@
 package com.yim.asocream.user.service;
 
 
+import com.yim.asocream.common.FTPUploader;
 import com.yim.asocream.exception.UserOverlapException;
 import com.yim.asocream.exception.WrongPasswordException;
 import com.yim.asocream.user.model.entity.UserEntity;
@@ -11,8 +12,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+
 import javax.transaction.Transactional;
 import java.security.Principal;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -87,6 +92,19 @@ public class UserService {
     }
 
 
+    public void updProfile(MultipartHttpServletRequest request, String uuid, Principal principal) throws Exception {
+
+        List<MultipartFile> fileList = request.getFiles("profile");
+
+        UserEntity userEntity = findUserEmailAndUserEntity(principal.getName());
+
+        //파일 생성전 파일 삭제부터
+        FTPUploader ftpUploader = new FTPUploader("125.185.128.147", "yim0321", "q1w2e3r4t5!");//파일 업로드
+        ftpUploader.uploadFile(fileList.get(0),uuid,userEntity.getProfileUrl());
+        ftpUploader.disconnect();
+
+        userEntity.setProfileUrl("/profile/"+uuid+fileList.get(0).getOriginalFilename());//db 작업끝
+    }
 }
 
 

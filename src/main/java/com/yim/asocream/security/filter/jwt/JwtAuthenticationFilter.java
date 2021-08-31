@@ -60,7 +60,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         PrincipalDetails principalDetailis = (PrincipalDetails) authResult.getPrincipal();
 
         if(principalDetailis.getUser().getRoleType()== RoleType.UNAUTHENTICATED){
-            response.getWriter().append("Unauthenticated:").append(principalDetailis.getUser().getUserEmail());
+            response.getWriter().append("Unauthenticated:")
+                    .append(principalDetailis.getUser().getUserEmail()).append("이메일 인증을 완료해주세요.");
         }
         else {//jwt 바꾸기
 
@@ -70,6 +71,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                     .withClaim("userEmail", principalDetailis.getUser().getUserEmail())
                     .sign(Algorithm.HMAC512("codingwiki"));
             //response.addHeader("Authorization", "Bearer "+jwtToken);
+            System.out.println("여기:"+jwtToken);
+
             response.getWriter().append("Authorization:").append("Bearer " + jwtToken + "");
         }
     }

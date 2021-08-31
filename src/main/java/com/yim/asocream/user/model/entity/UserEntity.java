@@ -21,7 +21,7 @@ UserEntity extends BaseTimeModel {
     private String userEmail;//유저 아이디
     private String userPw;
     private String name;
-    private String profileUrl;
+    private String profileUrl = "/profile/common/default.jpg";
 
     @Enumerated(EnumType.STRING)
     private Gender gender;

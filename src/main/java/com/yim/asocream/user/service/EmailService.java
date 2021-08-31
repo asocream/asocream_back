@@ -55,7 +55,7 @@ public class EmailService {
 
 
 
-    public String findPassword(String token) throws InterruptedException{
+    public void findPassword(String token) throws InterruptedException{
 
         String userEmail = jwtTokenService.authenticationToken(token);
         Optional<UserEntity> userEntity_ =
@@ -68,7 +68,11 @@ public class EmailService {
         userEntity.setUserPw(newPassword);
         userEntity.userPasswordEncoder(passwordEncoder);
         //userRepository.save(userEntity);영속성 나란 병신은 왜 지워도 될걸 주석달까?? 누군가는 이 주석 봐주면서 피식 해줬음~~~~
-        return newPassword;
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setTo(userEmail);//보낼 이메일
+        mailMessage.setSubject("비밀번호찾기");
+        mailMessage.setText("임시비밀번호 :"+newPassword);//jwt 를 이용해 인증번호 만듬
+        sendEmail(mailMessage);
     }
 
     public String getRamdomPassword() {

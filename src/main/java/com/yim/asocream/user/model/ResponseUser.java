@@ -14,12 +14,14 @@ public class ResponseUser {
     private String userEmail;
     private String name;
     private String roles;
+    private String gender;
 
     @Builder
     public ResponseUser(UserEntity userEntity){
         this.userEmail = userEntity.getUserEmail();
         this.name = userEntity.getName();
         this.roles = userEntity.getRoleType().toString();
+        this.gender = userEntity.getGender().toString();
     }
 
 }
