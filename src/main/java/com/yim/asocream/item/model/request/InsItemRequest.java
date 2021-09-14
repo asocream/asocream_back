@@ -7,11 +7,12 @@ import lombok.Getter;
 public class InsItemRequest {
 
     private String title;
-    private String Explanation;
+    private String explanation;//설명
     private int price;
+    private long kindId;
 
     public ItemEntity changeItemEntity(){
-        return new ItemEntity(title,Explanation,price);
+        return new ItemEntity(title,explanation,price);
     }
 
 }

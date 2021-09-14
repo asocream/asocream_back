@@ -19,6 +19,10 @@ public class OrderItemEntity extends BaseModel {
     @Column(name = "order_item_id")//이름 설정
     private long id;
 
+    public void setOrderEntity(OrderEntity orderEntity) {
+        this.orderEntity = orderEntity;
+    }
+
     @OneToOne(fetch = FetchType.LAZY)//지연 로딩
     @JoinColumn(name = "item_id")
     private ItemEntity itemEntity;

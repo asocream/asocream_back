@@ -1,11 +1,15 @@
 package com.yim.asocream.model.common;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Embeddable;
 
 @Embeddable
 @Getter
+@Setter
+@NoArgsConstructor
 public class Address {
 
     String zipcode;
@@ -13,9 +17,9 @@ public class Address {
     String detailedAddress;
 
 
-    public Address(String zipcode,String detailedAddress){
+    public Address(String zipcode,String detailedAddress,String shortAddress){
         this.zipcode = zipcode;
         this.detailedAddress = detailedAddress;
-        //this.shortAddress = change(zipcode);  집코드 변환해서 넣기
+        this.shortAddress = shortAddress;
     }
 }

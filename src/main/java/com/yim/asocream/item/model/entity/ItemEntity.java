@@ -1,7 +1,9 @@
 package com.yim.asocream.item.model.entity;
 
 import com.yim.asocream.item.model.request.UpdItemRequest;
+import com.yim.asocream.kind.model.KindEntity;
 import com.yim.asocream.model.common.BaseModel;
+import com.yim.asocream.order.model.entity.OrderEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,11 +21,20 @@ public class ItemEntity extends BaseModel {
     @Column(name = "item_id")//이름 설정
     private long id;
 
+    private String url;
     private String title;
     @Lob
     private String Explanation;
     private int price;
     private long views;
+
+    public void setKindEntity(KindEntity kindEntity) {
+        this.kindEntity = kindEntity;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)//지연 로딩
+    @JoinColumn(name = "kind_id")
+    private KindEntity kindEntity;
 
     public ItemEntity(String title, String explanation, int price) {
         this.title = title;
@@ -37,5 +48,8 @@ public class ItemEntity extends BaseModel {
         this.Explanation = updItemRequest.getExplanation();
         this.price = updItemRequest.getPrice();
 
+    }
+    public void addViews(int views){
+        this.views = this.views + views;
     }
 }

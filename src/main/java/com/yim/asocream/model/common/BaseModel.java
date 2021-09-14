@@ -19,9 +19,9 @@ public class BaseModel extends BaseTimeModel{
 
     @CreatedBy
     @Column(updatable = false)
-    private String CreatedBy;
+    private String createdBy;
 
     @LastModifiedBy
-    private String LastModifiedBy;
+    private String lastModifiedBy;
 
 }

@@ -8,6 +8,7 @@ import com.yim.asocream.order.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -22,18 +23,22 @@ public class orderController {
         return orderService.insOrder(insOrderRequest);
     }
 
+
     @GetMapping("/order")
-    public OrderResponse selOrderOne(long orderId){
-        return orderService.selOrderOne(orderId);
+    public OrderResponse selOrderOne(Principal principal){
+
+        return orderService.selOrderOne(principal);
     }
 
     @GetMapping("/orders")
-    public List<OrderResponse> selOrderList(){
-        return orderService.selOrderList();
+    public List<OrderResponse> selOrderList(Principal principal){
+
+        return orderService.selOrderList(principal);
     }
+
     @PatchMapping("/order")
-    public long updOrder(@RequestBody UpdOrderRequest updOrderRequest){
-        return orderService.updOrder(updOrderRequest);
+    public long updOrder(@RequestBody UpdOrderRequest updOrderRequest,Principal principal){
+        return orderService.updOrder(updOrderRequest,principal);
     }
 
     @DeleteMapping("/order")

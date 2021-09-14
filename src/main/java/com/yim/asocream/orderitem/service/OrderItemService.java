@@ -4,7 +4,9 @@ import com.yim.asocream.exception.ItemNotFoundException;
 import com.yim.asocream.exception.OrderItemNotFoundException;
 import com.yim.asocream.item.model.entity.ItemEntity;
 import com.yim.asocream.item.repository.ItemRepository;
+import com.yim.asocream.model.common.Address;
 import com.yim.asocream.order.model.entity.OrderEntity;
+import com.yim.asocream.order.model.entity.OrderState;
 import com.yim.asocream.order.repository.OrderRepository;
 import com.yim.asocream.orderitem.model.entity.OrderItemEntity;
 import com.yim.asocream.orderitem.model.request.InsOrderItemRequest;
@@ -14,6 +16,7 @@ import com.yim.asocream.orderitem.repository.OrderItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.util.Optional;
 
 @Service
@@ -25,7 +28,7 @@ public class OrderItemService {
     private final OrderRepository orderRepository;
 
 
-    public long insOrderItem(InsOrderItemRequest insOrderItemRequest) {
+    public long insOrderItem(InsOrderItemRequest insOrderItemRequest,Principal principal) {
 
         Optional<ItemEntity> itemEntity_ = itemRepository.findById(insOrderItemRequest.getItemId());
         if(!itemEntity_.isPresent()){
@@ -33,10 +36,20 @@ public class OrderItemService {
         }
         ItemEntity itemEntity = itemEntity_.get();
         OrderItemEntity orderItemEntity = insOrderItemRequest.changeEntity(itemEntity);
+
+        //여기서 orderEntity 가 유저아이디랑 같으면서 그리고 주문상태가 대기인것을 가져와서 없으면 만들어야함
+        OrderEntity orderEntity;
+        Optional<OrderEntity> orderEntity_ =
+                orderRepository.findOptionalByCreatedByAndOrderState(principal.getName(), OrderState.RECEIPT);
+        if(orderEntity_.isPresent()){
+            orderEntity = orderEntity_.get();
+        }
+        else {
+            orderEntity = new OrderEntity();
+        }
+        orderRepository.save(orderEntity);
+        orderItemEntity.setOrderEntity(orderEntity);
         orderItemRepository.save(orderItemEntity);
-        //order 의 sumPrice 변경 지연 로딩 전략 할필요 있을까??? 뒤에 얼마나 쓰는지 확인해보자
-        OrderEntity orderEntity = orderItemEntity.getOrderEntity();
-        orderEntity.addSumPrice(orderItemEntity.getSumPrice());
         return orderItemEntity.getId();
     }
 

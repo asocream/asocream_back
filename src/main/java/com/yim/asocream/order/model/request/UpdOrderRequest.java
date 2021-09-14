@@ -7,7 +7,8 @@ import lombok.Getter;
 @Getter
 public class UpdOrderRequest {
 
-    private long orderId;
-    private Address address;//배송지 주소
+    private String zipcode;
+    private String shortAddress;
+    private String detailedAddress;
 
 }

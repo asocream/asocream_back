@@ -15,6 +15,7 @@ public class ResponseUser {
     private String name;
     private String roles;
     private String gender;
+    private String profile;
 
     @Builder
     public ResponseUser(UserEntity userEntity){
@@ -22,6 +23,7 @@ public class ResponseUser {
         this.name = userEntity.getName();
         this.roles = userEntity.getRoleType().toString();
         this.gender = userEntity.getGender().toString();
+        this.profile = userEntity.getProfileUrl();
     }
 
 }

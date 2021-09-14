@@ -1,6 +1,7 @@
 package com.yim.asocream.order.model.entity;
 
 import com.yim.asocream.model.common.Address;
+import com.yim.asocream.model.common.BaseModel;
 import com.yim.asocream.order.model.request.UpdOrderRequest;
 import com.yim.asocream.orderitem.model.entity.OrderItemEntity;
 import lombok.AccessLevel;
@@ -11,9 +12,8 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)//기본생성자 생성 (접근지정자= PROTECTED)
 @Getter
-public class OrderEntity {
+public class OrderEntity extends BaseModel {
 
     @Id //id 프라머리키 설정,
     @GeneratedValue(strategy = GenerationType.IDENTITY)// GeneratedValue 자동 값증가 아이덴티티 전략
@@ -32,16 +32,19 @@ public class OrderEntity {
     private long sumPrice = 0;//총가격 가격은 orderItem이 추가될때마다 생김
 
     public void changeAddress(UpdOrderRequest updOrderRequest) {
-        this.address = updOrderRequest.getAddress();
+        this.address = new Address(
+                updOrderRequest.getZipcode(),updOrderRequest.getDetailedAddress(),updOrderRequest.getShortAddress());
+
     }
 
-    public OrderEntity(Address address){
-
-        this.address = address;
+    public OrderEntity(){
         this.orderState = OrderState.RECEIPT;
-
     }
     public void addSumPrice(long sumPrice) {
         this.sumPrice += sumPrice;
+    }
+
+    public void setOrderState(OrderState orderState) {
+        this.orderState = orderState;
     }
 }

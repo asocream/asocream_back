@@ -7,6 +7,8 @@ import com.yim.asocream.orderitem.service.OrderItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 @RestController
 @RequiredArgsConstructor
 public class OrderItemController {
@@ -14,9 +16,8 @@ public class OrderItemController {
     private final OrderItemService orderItemService;
 
     @PostMapping("/orderItem")
-    public long insOrderItem(@RequestBody InsOrderItemRequest insOrderItemRequest){
-
-        return orderItemService.insOrderItem(insOrderItemRequest);
+    public long insOrderItem(@RequestBody InsOrderItemRequest insOrderItemRequest, Principal principal){
+        return orderItemService.insOrderItem(insOrderItemRequest,principal);
     }
     @GetMapping("/orderItem")
     public OrderItemResponse selOrderItemOne(long orderItemId){

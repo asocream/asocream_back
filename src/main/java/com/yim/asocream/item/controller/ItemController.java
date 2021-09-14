@@ -28,6 +28,11 @@ public class ItemController {
         return itemService.selItemOne(id);
     }
 
+    @GetMapping("/itemByCategory")
+    public List<ItemResponse> selItemByCategory(long id){
+        return itemService.selItemByCategory(id);
+    }
+
     @GetMapping("/items")//이거 일단 만듬 사용할시 페이징 처리 까지 끝내기
     public List<ItemResponse> selItemList(){
 
